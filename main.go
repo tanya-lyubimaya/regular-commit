@@ -5,14 +5,15 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"github.com/google/go-github/v48/github"
-	"golang.org/x/oauth2"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"log"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/google/go-github/v48/github"
+	"golang.org/x/oauth2"
+	"gopkg.in/yaml.v2"
 )
 
 const (
@@ -25,8 +26,8 @@ type fileStruct struct {
 }
 
 var (
-	sourceOwner   = flag.String("source-owner", "tanya-lyubimaya", "Name of the owner (user or org) of the repo to create the commit in.")
-	sourceRepo    = flag.String("source-repo", "regular-commit", "Name of repo to create the commit in.")
+	sourceOwner   = flag.String("source-owner", os.Getenv("OWNER"), "Name of the owner (user or org) of the repo to create the commit in.")
+	sourceRepo    = flag.String("source-repo", os.Getenv("REPO"), "Name of repo to create the commit in.")
 	commitMessage = flag.String("commit-message", "💥 Updated file "+FILENAME, "Content of the commit message.")
 	commitBranch  = flag.String("commit-branch", "main", "Name of branch to create the commit in. If it does not already exists, it will be created using the `base-branch` parameter")
 	baseBranch    = flag.String("base-branch", "main", "Name of branch to create the `commit-branch` from.")
@@ -34,8 +35,8 @@ var (
 The local file is separated by its target location by a semi-colon.
 If the file should be in the same location with the same name, you can just put the file name and omit the repetition.
 Example: README.md,main.go:github/examples/commitpr/main.go`)
-	authorName  = flag.String("author-name", "Tatyana Lyubimaya", "Name of the author of the commit.")
-	authorEmail = flag.String("author-email", "tatyana.lyubimaya.work@gmail.com", "Email of the author of the commit.")
+	authorName  = flag.String("author-name", os.Getenv("AUTHOR_NAME"), "Name of the author of the commit.")
+	authorEmail = flag.String("author-email", os.Getenv("AUTHOR_EMAIL"), "Email of the author of the commit.")
 )
 
 var ctx = context.Background()
